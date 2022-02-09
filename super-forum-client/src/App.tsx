@@ -1,55 +1,51 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import "./App.css";
-import { Switch, Route } from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import Home from "./components/routes/Home";
 // import UserProfile from "./components/routes/userProfile/UserProfile";
-import { useDispatch } from "react-redux";
-import { gql, useQuery } from "@apollo/client";
-import useRefreshReduxMe from "./hooks/useRefreshReduxMe";
+import {useDispatch} from "react-redux";
+import {gql, useQuery} from "@apollo/client";
+import {UsersDateType} from "./store/usersData/UsersDataReducer";
 
-// const GetAllCategories = gql`
-//   query getAllCategories {
-//     getAllCategories {
-//       id
-//       name
-//     }
-//   }
-// `;
+
+const GetAllUsers = gql`
+  query getAllUsers {
+    getAllUsers {
+      id
+      userName
+      email
+      status
+      createdOn
+      lastModifiedOn
+    }
+  }
+`;
+
+
+
 
 function App() {
-  // const { data: categoriesData } = useQuery(GetAllCategories);
-  // const { execMe, updateMe } = useRefreshReduxMe();
+
+  const { data: usersDate } = useQuery(GetAllUsers);
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (usersDate && usersDate.getAllUsers) {
+      console.log("Getting data")
+      dispatch({
+        type: UsersDateType.USERS_DATE_TYPE,
+        payload: usersDate.getAllUsers,
+      });
+    }
+  }, [dispatch, usersDate]);
 
-  // useEffect(() => {
-  //   execMe();
-  // }, [execMe]);
-  //
-  // useEffect(() => {
-  //   updateMe();
-  // }, [updateMe]);
+    const renderHome = (props: any) => <Home {...props} />;
 
-  // useEffect(() => {
-  //   if (categoriesData && categoriesData.getAllCategories) {
-  //     dispatch({
-  //       type: ThreadCategoriesType,
-  //       payload: categoriesData.getAllCategories,
-  //     });
-  //   }
-  // }, [dispatch, categoriesData]);
+    return (
+        <Switch>
+            <Route exact={true} path="/" render={renderHome}/>
 
-  const renderHome = (props: any) => <Home {...props} />;
-  // const renderThread = (props: any) => <Thread {...props} />;
-  // const renderUserProfile = (props: any) => <UserProfile {...props} />;
-
-  return (
-    <Switch>
-      <Route exact={true} path="/" render={renderHome} />
-      {/*<Route path="/categorythreads/:categoryId" render={renderHome} />*/}
-      {/*<Route path="/thread/:id?" render={renderThread} />*/}
-      {/*<Route path="/userprofile/:id" render={renderUserProfile} />*/}
-    </Switch>
-  );
+        </Switch>
+    );
 }
 
 export default App;
