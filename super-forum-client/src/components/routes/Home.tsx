@@ -9,10 +9,11 @@ const Home: FC = () => {
     <div className="screen-root-container home-container">
       <div className="navigation">
         <Nav />
+
       </div>
 
-      {/*<LeftMenu />*/}
-      {/*<Main />*/}
+
+      <Main />
 
     </div>
   );

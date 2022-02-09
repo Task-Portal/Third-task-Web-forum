@@ -1,8 +1,9 @@
 import {IResolvers} from "apollo-server-express";
 
 import {User} from "../repo/User";
-import {checkEmailInDb, login, logout, me, register, UserResult,} from "../repo/UserRepo";
+import {checkEmailInDb, getAllUsers, login, logout, me, register, UserResult,} from "../repo/UserRepo";
 import {GqlContext} from "./GqlContext";
+import {QueryArrayResult} from "../repo/QueryArrayResult";
 
 
 declare module "express-session" {
@@ -61,6 +62,27 @@ const resolvers: IResolvers = {
                 return await checkEmailInDb(args.email);
             } catch (ex) {
                 console.log(ex);
+                throw ex;
+            }
+        },
+        getAllUsers: async (
+            obj: any,
+            args: null,
+            ctx: GqlContext,
+            info: any
+        ): Promise<Array<User> | EntityResult> => {
+            let users: QueryArrayResult<User>;
+            try {
+                users = await getAllUsers();
+                if (users.entities) {
+                    return users.entities;
+                }
+                return {
+                    messages: users.messages
+                        ? users.messages
+                        : [STANDARD_ERROR],
+                };
+            } catch (ex) {
                 throw ex;
             }
         },

@@ -2,6 +2,7 @@ import { User } from "./User";
 import bcrypt from "bcryptjs";
 import { isPasswordValid } from "../common/validators/PasswordValidator";
 import { isEmailValid } from "../common/validators/EmailValidator";
+import {QueryArrayResult} from "./QueryArrayResult";
 
 const saltRounds = 10;
 
@@ -115,6 +116,14 @@ export const checkEmailInDb = async (email: string): Promise<string> => {
     return "Email is taken";
   }
 };
+
+export const getAllUsers = async (): Promise<QueryArrayResult<User>> => {
+  const categories = await User.find();
+  return {
+    entities: categories,
+  };
+};
+
 
 
 function userNotFound(userName: string) {

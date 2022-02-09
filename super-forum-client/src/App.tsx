@@ -18,16 +18,16 @@ import useRefreshReduxMe from "./hooks/useRefreshReduxMe";
 
 function App() {
   // const { data: categoriesData } = useQuery(GetAllCategories);
-  const { execMe, updateMe } = useRefreshReduxMe();
+  // const { execMe, updateMe } = useRefreshReduxMe();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    execMe();
-  }, [execMe]);
-
-  useEffect(() => {
-    updateMe();
-  }, [updateMe]);
+  // useEffect(() => {
+  //   execMe();
+  // }, [execMe]);
+  //
+  // useEffect(() => {
+  //   updateMe();
+  // }, [updateMe]);
 
   // useEffect(() => {
   //   if (categoriesData && categoriesData.getAllCategories) {

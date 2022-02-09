@@ -3,7 +3,7 @@ import { Length } from "class-validator";
 
 import { Auditable } from "./Auditable";
 
-export type UserStatusType = "block" | "unblock";
+export type UserStatusType = "block" | "active";
 
 @Entity({ name: "Users" })
 export class User extends Auditable {
@@ -30,12 +30,12 @@ export class User extends Auditable {
   password: string;
 
 
-  @Column( {
-    name: "LastTimeLogin",
-    default: () => `now()`,
-    nullable: false,
-  })
-  lastTimeLogin: Date;
+  // @Column( {
+  //   name: "LastTimeLogin",
+  //   default: () => `now()`,
+  //   nullable: false,
+  // })
+  // lastTimeLogin: Date;
 
   @Column({
     type: "enum",
