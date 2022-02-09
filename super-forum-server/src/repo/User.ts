@@ -21,7 +21,6 @@ export class User extends Auditable {
   @Column("varchar", {
     name: "UserName",
     length: 60,
-    unique: true,
     nullable: false,
   })
   userName: string;

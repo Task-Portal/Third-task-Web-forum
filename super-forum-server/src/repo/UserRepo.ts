@@ -14,6 +14,7 @@ export const register = async (
   userName: string,
   password: string
 ): Promise<UserResult> => {
+  console.log("We are here on server*****************************")
   const result = isPasswordValid(password);
   if (!result.isValid) {
     return {
@@ -103,6 +104,17 @@ export const me = async (id: string): Promise<UserResult> => {
   };
 };
 
+export const checkEmailInDb = async (email: string): Promise<string> => {
+  const user = await User.findOne({
+    where: { email },
+  });
+
+  if (!user) {
+    return "Email is free";
+  } else {
+    return "Email is taken";
+  }
+};
 
 
 function userNotFound(userName: string) {

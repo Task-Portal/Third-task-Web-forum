@@ -9,18 +9,18 @@ export const isPasswordValid = (password: string): PasswordTestResult => {
     isValid: true,
   };
 
-  if (password.length < 8) {
-    passwordTestResult.message = "Password must be at least 8 characters";
+  if (password.length < 1) {
+    passwordTestResult.message = "Password must be at least 1 characters";
     passwordTestResult.isValid = false;
     return passwordTestResult;
   }
 
   const strongPassword = new RegExp(
-    "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+    "^[a-zA-Z0-9]+$"
   );
   if (!strongPassword.test(password)) {
     passwordTestResult.message =
-      "Password must contain at least 1 special character, 1 cap letter, and 1 number";
+      "Password must contain at least 1 character";
     passwordTestResult.isValid = false;
   }
 

@@ -48,7 +48,7 @@ const Nav = () => {
 
                 {user ? (
                     <li className="nav_li">
-                      <FontAwesomeIcon icon={faUser} />
+                      <FontAwesomeIcon icon={faUser} className="icon-fontAwesome" />
                       <span className="menu-name">
                 {/*    Todo change this line */}
                         <Link to={`/userprofile/${user?.id}`}>{user?.userName}</Link>
@@ -60,7 +60,7 @@ const Nav = () => {
                     <li className="nav_li" >
                       <FontAwesomeIcon icon={faRegistered} className="icon-fontAwesome" />
                       <span onClick={onClickToggleRegister} className="menu-name" >
-                register
+                egister
               </span>
                       <Registration
                           isOpen={showRegister}
@@ -71,9 +71,9 @@ const Nav = () => {
 
                 {user ? null : (
                     <li className="nav_li">
-                      <FontAwesomeIcon icon={faSignInAlt} />
+                      <FontAwesomeIcon icon={faSignInAlt} className="icon-fontAwesome" />
                       <span onClick={onClickToggleLogin} className="menu-name">
-                login
+                ogin
               </span>
                       <Login isOpen={showLogin} onClickToggle={onClickToggleLogin} />
                     </li>
@@ -81,7 +81,7 @@ const Nav = () => {
 
                 {user ? (
                     <li className="nav_li">
-                      <FontAwesomeIcon icon={faSignOutAlt} />
+                      <FontAwesomeIcon icon={faSignOutAlt} className="icon-fontAwesome"  />
                       <span onClick={onClickToggleLogout} className="menu-name">
                 logout
               </span>

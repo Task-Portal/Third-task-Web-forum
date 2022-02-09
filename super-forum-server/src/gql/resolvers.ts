@@ -1,7 +1,7 @@
 import {IResolvers} from "apollo-server-express";
 
 import {User} from "../repo/User";
-import {login, logout, me, register, UserResult,} from "../repo/UserRepo";
+import {checkEmailInDb, login, logout, me, register, UserResult,} from "../repo/UserRepo";
 import {GqlContext} from "./GqlContext";
 
 
@@ -48,6 +48,19 @@ const resolvers: IResolvers = {
                     messages: user.messages ? user.messages : [STANDARD_ERROR],
                 };
             } catch (ex) {
+                throw ex;
+            }
+        },
+        checkEmail: async (
+            obj: any,
+            args: { email: string },
+            ctx: GqlContext,
+            info: any
+        ): Promise<string> => {
+            try {
+                return await checkEmailInDb(args.email);
+            } catch (ex) {
+                console.log(ex);
                 throw ex;
             }
         },

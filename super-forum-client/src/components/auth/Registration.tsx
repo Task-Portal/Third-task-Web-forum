@@ -1,119 +1,220 @@
-import React, { FC, useReducer } from "react";
+import React, {FC, useReducer} from "react";
+import {isPasswordValid, PasswordTestResult,} from "../../common/validators/PasswordValidator";
 import ReactModal from "react-modal";
-import "./Registration.css";
 import ModalProps from "../types/ModalProps";
-import userReducer from "./common/UserReducer";
-import { allowSubmit } from "./common/Helpers";
-import { gql, useMutation } from "@apollo/client";
+import "./Registration.css";
+import userReducer from "../auth/common/UserReducer";
+import {gql, useMutation} from "@apollo/client";
+import {isEmailValid,} from "../../common/validators/EmailValidator";
+
 
 const RegisterMutation = gql`
-  mutation register($email: String!, $userName: String!, $password: String!) {
-    register(email: $email, userName: $userName, password: $password)
-  }
+    mutation register(
+        $email: String!
+        $userName: String!
+        $password: String!
+    ) {
+        register(
+            email: $email
+            userName: $userName
+            password: $password
+
+        )
+    }
 `;
 
-const Registration: FC<ModalProps> = ({ isOpen, onClickToggle }) => {
-  const [execRegister] = useMutation(RegisterMutation);
-  const [
-    { userName, password, email, passwordConfirm, resultMsg, isSubmitDisabled },
-    dispatch,
-  ] = useReducer(userReducer, {
-    userName: "",
-    password: "",
-    email: "",
-    passwordConfirm: "",
-    resultMsg: "",
-    isSubmitDisabled: true,
-  });
+const Registration: FC<ModalProps> = ({isOpen, onClickToggle}) => {
+    const [execRegister] = useMutation(RegisterMutation);
+    const [
+        {
+            userName,
+            password,
+            email,
+            passwordConfirm,
+            resultMsg,
+            // isSubmitDisabled,
 
-  const onChangeUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ payload: e.target.value, type: "userName" });
-    if (!e.target.value)
-      allowSubmit(dispatch, "Username cannot be empty", true);
-    else allowSubmit(dispatch, "", false);
-  };
-  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ payload: e.target.value, type: "email" });
-    if (!e.target.value) allowSubmit(dispatch, "Email cannot be empty", true);
-    else allowSubmit(dispatch, "", false);
-  };
-
-  const onClickRegister = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-
-    try {
-      const result = await execRegister({
-        variables: {
-          email,
-          userName,
-          password,
         },
-      });
-      console.log("register result", result);
-      dispatch({ payload: result.data.register, type: "resultMsg" });
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
+        dispatch,
+    ] = useReducer(userReducer, {
+        userName: "Alex",
+        password: "1",
+        email: "admin@admin.com",
+        passwordConfirm: "",
+        resultMsg: "",
+        // isSubmitDisabled: true,
+    });
 
-  const onClickCancel = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    onClickToggle(e);
-  };
+    const IsSubmitDisabledFunc = () => {
+        if (
+            userName === "" ||
+            password === "" ||
+            email === "" ||
+            passwordConfirm === ""
+        ) {
+            console.log("check is submitDisabled");
+            return true;
+        }
 
-  return (
-    <ReactModal
-      className="modal-menu"
-      isOpen={isOpen}
-      onRequestClose={onClickToggle}
-      shouldCloseOnOverlayClick={true}
-    >
-      <form>
-        <div className="reg-inputs">
-          <div>
-            <label>username</label>
-            <input type="text" value={userName} onChange={onChangeUserName} />
-          </div>
-          <div>
-            <label>email</label>
-            <input type="text" value={email} onChange={onChangeEmail} />
-          </div>
-          <div>
-            {/*<PasswordComparison*/}
-            {/*  dispatch={dispatch}*/}
-            {/*  password={password}*/}
-            {/*  passwordConfirm={passwordConfirm}*/}
-            {/*/>*/}
-          </div>
-        </div>
-        <div className="form-buttons">
-          <div className="form-btn-left">
-            <button
-              style={{ marginLeft: ".5em" }}
-              className="action-btn"
-              disabled={isSubmitDisabled}
-              onClick={onClickRegister}
-            >
-              Register
-            </button>
-            <button
-              style={{ marginLeft: ".5em" }}
-              className="cancel-btn"
-              onClick={onClickCancel}
-            >
-              Close
-            </button>
-          </div>
-          <span className="form-btn-right">
+        return false;
+    };
+
+    const onChangeUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch({payload: e.target.value, type: "userName"});
+        if (!e.target.value) {
+            dispatch({payload: "Username can not be empty", type: "resultMsg"});
+        } else {
+            dispatch({payload: "", type: "resultMsg"});
+        }
+    };
+
+    const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch({type: "email", payload: e.target.value});
+        isEmailValid(e.target.value, dispatch);
+    };
+
+    const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch({payload: e.target.value, type: "password"});
+        const passwordCheck: PasswordTestResult = isPasswordValid(e.target.value);
+
+        if (!passwordCheck.isValid) {
+            // allowSubmit(dispatch, passwordCheck.message, true);
+            dispatch({payload: passwordCheck.message, type: "resultMsg"});
+        } else {
+            // allowSubmit(dispatch, passwordCheck.message, IsSubmitDisabledFunc());
+            dispatch({payload: "", type: "resultMsg"});
+        }
+    };
+
+    const onChangePasswordConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch({payload: e.target.value, type: "passwordConfirm"});
+        isPasswordTheSame(password, e.target.value);
+    };
+
+    const isPasswordTheSame = (
+        passwordVal: string,
+        passwordConfirmVal: string
+    ) => {
+        if (passwordVal !== passwordConfirmVal) {
+            // allowSubmit(dispatch, "Passwords do not match", true);
+            dispatch({payload: "Passwords do not match", type: "resultMsg"});
+        } else {
+            dispatch({payload: "", type: "resultMsg"});
+            // allowSubmit(dispatch, resultMsg, IsSubmitDisabledFunc());
+        }
+    };
+
+    const onClickRegister = async (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        e.preventDefault();
+
+        let d = new Date(); // for now
+
+        console.log(
+            "***************",
+            `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}:${d.getMilliseconds()}`
+        );
+        console.log("UserName", userName);
+        console.log("password", password);
+        console.log("email", email);
+        console.log("passwordConfirm", passwordConfirm);
+
+        try {
+            const result = await execRegister({
+                variables: {
+                    email,
+                    userName,
+                    password
+                },
+            });
+            console.log("register result", result);
+            dispatch({payload: result.data.register, type: "resultMsg"});
+
+        } catch (ex) {
+            console.log(ex);
+        }
+    };
+
+    const onClickCancel = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        onClickToggle(e);
+    };
+
+    return (
+        <ReactModal
+            isOpen={isOpen}
+            className="modal-menu"
+            onRequestClose={onClickToggle}
+            shouldCloseOnOverlayClick={true}
+            ariaHideApp={false}
+        >
+            <form>
+                <div className="req-inputs">
+                    <div>
+                        <input
+                            type="text"
+                            value={userName}
+                            onChange={onChangeUserName}
+                            placeholder="User name"
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="text"
+                            value={email}
+                            onChange={onChangeEmail}
+                            placeholder="Email"
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Password"
+                            value={password}
+                            onChange={onChangePassword}
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Password Confirmation"
+                            value={passwordConfirm}
+                            onChange={onChangePasswordConfirm}
+                        />
+                    </div>
+
+
+                </div>
+                <div className="reg-buttons">
+                    <div className="reg-btn-left">
+                        <button
+                            style={{
+                                marginLeft: ".5em",
+                                background: IsSubmitDisabledFunc() ? "skyblue" : "deepskyblue",
+                            }}
+                            className="action-btn"
+                            disabled={IsSubmitDisabledFunc()}
+                            onClick={onClickRegister}
+                        >
+                            Register
+                        </button>
+                        <button
+                            style={{marginLeft: ".5em"}}
+                            className="cancel-btn"
+                            onClick={onClickCancel}
+                        >
+                            Close
+                        </button>
+                    </div>
+                    <span className="reg-btn-right">
             <strong>{resultMsg}</strong>
           </span>
-        </div>
-      </form>
-    </ReactModal>
-  );
+                </div>
+            </form>
+        </ReactModal>
+    );
 };
 
 export default Registration;
