@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import Nav from "../areas/Nav";
+import MyNav from "../areas/MyNav";
 import Main from "../areas/main/Main";
 import "./Home.css";
 
@@ -7,7 +7,7 @@ const Home: FC = () => {
 
     return (
         <>
-            <Nav/>
+            <MyNav/>
             <Main/>
         </>
     );

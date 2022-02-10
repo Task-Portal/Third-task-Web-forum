@@ -9,6 +9,7 @@ import configureStore from "./store/configureStore";
 import ErrorBoundary from "./components/ErrorBoundary";
 import ReactModal from "react-modal";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 console.log("gql url", process.env.REACT_APP_GQL_URL);
 const client = new ApolloClient({
