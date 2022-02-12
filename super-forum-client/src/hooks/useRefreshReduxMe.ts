@@ -1,8 +1,7 @@
 import { gql, QueryLazyOptions, useLazyQuery } from "@apollo/client";
 import { useDispatch } from "react-redux";
 import { UserProfileSetType } from "../store/user/UserReducer";
-import internal from "stream";
-import { useHistory } from "react-router-dom";
+
 
 export const Me = gql`
   query me {
@@ -27,7 +26,7 @@ interface UseRefreshReduxMeResult {
 const useRefreshReduxMe = (): UseRefreshReduxMeResult => {
   const [execMe, { data }] = useLazyQuery(Me);
   const reduxDispatcher = useDispatch();
-  const history = useHistory();
+
 
   const deleteMe = () => {
     reduxDispatcher({
@@ -43,7 +42,7 @@ const useRefreshReduxMe = (): UseRefreshReduxMeResult => {
         type: UserProfileSetType.USER_PROFILE_SET,
         payload: data.me,
       });
-     // history.push(`home/${data.me.id}`);
+
     }
   };
 

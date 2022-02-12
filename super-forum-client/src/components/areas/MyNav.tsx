@@ -23,6 +23,7 @@ const MyNav = () => {
     const [showLogin, setShowLogin] = useState(false);
     const [showLogout, setShowLogout] = useState(false);
     const user = useSelector((state: AppState) => state.user);
+    const selectedCbox = useSelector((state: AppState) => state.selectedCbox);
 
     const onClickToggleLogout = () => {
         setShowLogout(!showLogout);
@@ -35,7 +36,9 @@ const MyNav = () => {
     const onClickToggleLogin = () => {
         setShowLogin(!showLogin);
     };
-
+    const onClickHandler =()=>{
+        console.log("clicked")
+    }
     return (
         <Navbar bg="dark" expand="lg">
             <Container>
@@ -90,7 +93,7 @@ const MyNav = () => {
 
                     {user ? (
                         <div className="d-flex">
-                            <Button variant="outline-light" className="me-sm-1">
+                            <Button variant="outline-light" className="me-sm-1" onClick={onClickHandler}>
                                 <FontAwesomeIcon icon={faLock} className="icon-fontAwesome"/>
                                 Block
                             </Button>

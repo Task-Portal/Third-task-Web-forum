@@ -1,73 +1,87 @@
 import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AppState} from "../../../store/AppState";
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
+import BootstrapTable, {SelectRowProps} from "react-bootstrap-table-next";
+import User from "../../../models/User";
+import {SelectedCboxType} from "../../../store/selectedCheckboxes/selectedCboxReducer";
+
+const columns = [
+    // {
+    //     dataField: "id",
+    //     text: "id",
+    //     sort: true
+    // },
+
+    {
+        dataField: "userName",
+        text: "Name",
+        sort: true
+    },
+    {
+        dataField: "email",
+        text: "Email",
+        sort: true
+    },
+    {
+        dataField: "status",
+        text: "Status",
+        sort: true
+    },
+    {
+        dataField: "createdOn",
+        text: "Created On",
+        sort: true
+    }, {
+        dataField: "lastModifiedOn",
+        text: "Last Modified",
+        sort: true
+    }
+
+];
 
 const Main = () => {
 
     const usersState = useSelector((state: AppState) => state.users);
-    const [users, setUsers] = useState<JSX.Element>();
-    const [arrayCheckboxes, setArrayCheckboxes] = useState<Array<{ id: string, checkbox: boolean }>>()
-    const [select, setSelect] = useState<boolean>(false)
+    const [data, setData] = useState<Array<User>>([])
+    const [selectedCbox, setSelectedCbox] = useState<Array<string>>([])
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if (usersState) {
-
-            let count = 1
-            const us = usersState.map((u) => {
-
-                return (
-
-                    <tr key={u.id}>
-                        <th scope="row">{count++}</th>
-
-                        <td><input className="form-check-input" type="checkbox" id={u.id} onChange={onChange}
-                                   checked={arrayCheckboxes ? arrayCheckboxes.filter(v => v.id === u.id).map(u => u.checkbox)[0] : false}/>
-                        </td>
-
-                        <td>{u.userName}</td>
-                        <td>{u.email}</td>
-                        <td>{u.status}</td>
-                        <td>{u.createdOn}</td>
-                        <td>{u.lastModifiedOn}</td>
-                    </tr>
-
-                );
-            });
-            let arr: Array<{ id: string, checkbox: boolean }> = usersState.map((u) => {
-                return ({id: u.id, checkbox: false})
-            })
-
-            setArrayCheckboxes(arr);
-            setUsers(<tbody>{us}</tbody>);
+            setData(usersState)
         }
     }, [usersState]);
 
-    const onSelect = () => {
-        console.log("Clicked")
-        let arr = [...arrayCheckboxes]
-        arr?.forEach(i => i.checkbox = !select)
-        // arr?.map(i => { return {id:i.id, checkbox: !select}})
-        setSelect(!select)
-        setArrayCheckboxes(arr)
+    const selectRow: SelectRowProps<any> = {
+        mode: "checkbox",
+        style: {background: 'navajowhite'},
+        clickToSelect: true,
+        onSelect: (row, isSelect, rowIndex, e) => {
+
+            let f = [...selectedCbox]
+            isSelect ? f.push(row.id) : f = f.filter(m => m !== row.id)
+            setSelectedCbox(f)
+            dispatch({type: SelectedCboxType, payload: f})
+        },
+        onSelectAll: (isSelect, rows, e) => {
+
+            const r = isSelect ? rows.map(m => m.id) : []
+            setSelectedCbox(r)
+            dispatch({type: SelectedCboxType, payload: r})
+
+        },
+        selected: [...selectedCbox]
     }
 
-    const onChange = () => {}
-
-    return (<table className="table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col" ><button onClick={onSelect} style={{cursor: "pointer"}}>Select All</button> </th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Status</th>
-                <th scope="col">Created on</th>
-                <th scope="col">Last Modified</th>
-            </tr>
-            </thead>
-            {users}
-
-        </table>
+    return (
+        <BootstrapTable
+            bootstrap4
+            keyField="id"
+            data={data!}
+            columns={columns}
+            selectRow={selectRow}
+        />
 
     );
 };

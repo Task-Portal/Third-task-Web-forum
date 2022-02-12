@@ -2,7 +2,6 @@ import React, {useEffect} from "react";
 import "./App.css";
 import {Route, Switch} from "react-router-dom";
 import Home from "./components/routes/Home";
-// import UserProfile from "./components/routes/userProfile/UserProfile";
 import {useDispatch} from "react-redux";
 import {gql, useQuery} from "@apollo/client";
 import {UsersDateType} from "./store/usersData/UsersDataReducer";
@@ -20,9 +19,6 @@ const GetAllUsers = gql`
     }
   }
 `;
-
-
-
 
 function App() {
 
@@ -43,7 +39,6 @@ function App() {
     return (
         <Switch>
             <Route exact={true} path="/" render={renderHome}/>
-
         </Switch>
     );
 }

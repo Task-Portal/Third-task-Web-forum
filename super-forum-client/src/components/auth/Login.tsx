@@ -12,7 +12,7 @@ const LoginMutation = gql`
   }
 `;
 
-// @ts-ignore
+
 const Login: FC<ModalProps> = ({ isOpen, onClickToggle }) => {
   const [execLogin] = useMutation(LoginMutation, {
     refetchQueries: [
