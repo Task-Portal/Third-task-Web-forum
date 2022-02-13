@@ -16,6 +16,21 @@ import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import {Button} from "react-bootstrap";
+import {gql, useMutation} from "@apollo/client";
+
+const btnHandler = gql`
+    mutation blockUnblockDelete(
+        $button: String!
+        $arr: [String!]
+        
+    ) {
+        blockUnblockDelete(
+            button: $button
+            arr: $arr
+        )
+    }
+`;
+
 
 const MyNav = () => {
 
@@ -24,6 +39,7 @@ const MyNav = () => {
     const [showLogout, setShowLogout] = useState(false);
     const user = useSelector((state: AppState) => state.user);
     const selectedCbox = useSelector((state: AppState) => state.selectedCbox);
+    const [execBtnHandler] = useMutation(btnHandler);
 
     const onClickToggleLogout = () => {
         setShowLogout(!showLogout);
@@ -36,9 +52,28 @@ const MyNav = () => {
     const onClickToggleLogin = () => {
         setShowLogin(!showLogin);
     };
-    const onClickHandler =()=>{
-        console.log("clicked")
-    }
+
+
+    const buttonHandler = async(event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+
+        try {
+            const result = await execBtnHandler({
+                variables: {
+                   button: event.currentTarget.name,
+                   arr: selectedCbox
+                }
+            });
+            console.log("on handler result", result);
+
+            // dispatch({payload: result.data.register, type: "resultMsg"});
+
+        } catch (ex) {
+            console.log(ex);
+        }
+
+    };
+
     return (
         <Navbar bg="dark" expand="lg">
             <Container>
@@ -93,18 +128,18 @@ const MyNav = () => {
 
                     {user ? (
                         <div className="d-flex">
-                            <Button variant="outline-light" className="me-sm-1" onClick={onClickHandler}>
+                            <Button variant="outline-light" className="me-sm-1" name="block" onClick={buttonHandler}>
                                 <FontAwesomeIcon icon={faLock} className="icon-fontAwesome"/>
                                 Block
                             </Button>
 
 
-                            <Button variant="outline-light" className="me-sm-1">
+                            <Button variant="outline-light" className="me-sm-1" name="active" onClick={buttonHandler}>
                                 <FontAwesomeIcon icon={faLockOpen} className="icon-fontAwesome"/>
                                 Unblock
                             </Button>
 
-                            <Button variant="outline-light" className="me-sm-1">
+                            <Button variant="outline-light" className="me-sm-1" name="delete" onClick={buttonHandler}>
                                 <FontAwesomeIcon icon={faUserMinus} className="icon-fontAwesome"/>
                                 Delete
                             </Button>

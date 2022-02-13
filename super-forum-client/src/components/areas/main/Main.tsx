@@ -43,6 +43,7 @@ const columns = [
 const Main = () => {
 
     const usersState = useSelector((state: AppState) => state.users);
+    const userState = useSelector((state: AppState) => state.user);
     const [data, setData] = useState<Array<User>>([])
     const [selectedCbox, setSelectedCbox] = useState<Array<string>>([])
     const dispatch = useDispatch()
@@ -55,7 +56,10 @@ const Main = () => {
 
     const selectRow: SelectRowProps<any> = {
         mode: "checkbox",
-        style: {background: 'navajowhite'},
+        // style: {background: 'navajowhite'},
+        bgColor: (row, rowIndex) => {
+            return row.id===userState?.id ? "red": "navajowhite"
+        },
         clickToSelect: true,
         onSelect: (row, isSelect, rowIndex, e) => {
 

@@ -37,6 +37,7 @@ const typeDefs = gql`
         register(email: String!, userName: String!, password: String!): String!
         login(userName: String!, password: String!): String!
         logout(userName: String!): String!
+        blockUnblockDelete(button: String!, arr:[String!]):String!
 
     }
 `;

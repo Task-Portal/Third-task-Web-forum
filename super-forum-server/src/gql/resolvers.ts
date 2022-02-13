@@ -1,7 +1,16 @@
 import {IResolvers} from "apollo-server-express";
 
 import {User} from "../repo/User";
-import {checkEmailInDb, getAllUsers, login, logout, me, register, UserResult,} from "../repo/UserRepo";
+import {
+    blockUnblockDeleteDb,
+    checkEmailInDb,
+    getAllUsers,
+    login,
+    logout,
+    me,
+    register,
+    UserResult,
+} from "../repo/UserRepo";
 import {GqlContext} from "./GqlContext";
 import {QueryArrayResult} from "../repo/QueryArrayResult";
 
@@ -141,6 +150,27 @@ const resolvers: IResolvers = {
                     }
                     console.log("session destroyed", ctx.req.session?.userId);
                 });
+                return result;
+            } catch (ex) {
+                throw ex;
+            }
+        },
+        blockUnblockDelete: async (
+            obj: any,
+            args: { button:string, arr:Array<string> },
+            ctx: GqlContext,
+            info: any
+        ): Promise<string> => {
+            try {
+                let result = await blockUnblockDeleteDb(args.button, args.arr);
+
+                // ctx.req.session?.destroy((err: any) => {
+                //     if (err) {
+                //         console.log("destroy session failed");
+                //         return;
+                //     }
+                //     console.log("session destroyed", ctx.req.session?.userId);
+                // });
                 return result;
             } catch (ex) {
                 throw ex;
