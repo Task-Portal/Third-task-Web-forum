@@ -66,6 +66,11 @@ export const login = async (
     if (!passwordMatch) {
         return { messages: ["Password is invalid."] };
     }
+
+
+    user.lastModifiedOn = new Date(getDateTime())
+    await  user.save();
+
     return { user: user };
 };
 
@@ -90,6 +95,11 @@ export const me = async (id: string): Promise<UserResult> => {
             messages: ["User not found."],
         };
     }
+
+    if (user.status =="block"){
+        return { messages: ["User is blocked"] };
+    }
+
 
     user.password = "";
     return {
@@ -132,4 +142,11 @@ export const blockUnblockDeleteDb = async (button: string, arr: Array<string>): 
 
 function userNotFound(userName: string) {
     return `User with userName ${userName} not found.`;
+}
+
+function  getDateTime(){
+    let today = new Date();
+    let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    return date+' '+time
 }

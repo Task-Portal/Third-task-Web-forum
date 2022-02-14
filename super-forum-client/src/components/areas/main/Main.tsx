@@ -32,12 +32,12 @@ const columns = [
         dataField: "createdOn",
         text: "Created On",
         sort: true,
-        formatter:(cell:any)=>{return format(new Date(cell), 'dd MMMM yyyy eee ')}
+        formatter:(cell:any)=>{return format(new Date(cell), 'dd MMMM yyyy eee H:mm:ss')}
     }, {
         dataField: "lastModifiedOn",
-        text: "Last Modified",
+        text: "Last Login Date",
         sort: true,
-        formatter:(cell:any)=>{return format(new Date(cell), 'dd MMMM yyyy eee ')}
+        formatter:(cell:any)=>{return format(new Date(cell), 'dd MMMM yyyy eee H:mm:ss')}
     }
 
 ];

@@ -102,7 +102,10 @@ const Login: FC<ModalProps> = ({ isOpen, onClickToggle }) => {
           <div className="form-buttons form-buttons-sm">
             <div className="form-btn-left">
               <button
-                  style={{ marginLeft: ".5em" }}
+                  style={{
+                    marginLeft: ".5em",
+                    background: isSubmitDisabled ? "skyblue" : "deepskyblue",
+                  }}
                   className="action-btn"
                   disabled={isSubmitDisabled}
                   onClick={onClickLogin}

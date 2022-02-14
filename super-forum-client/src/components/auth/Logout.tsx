@@ -29,8 +29,7 @@ const Logout: FC<ModalProps> = ({ isOpen, onClickToggle }) => {
   ) => {
     e.preventDefault();
     onClickToggle(e);
-    console.log("Here *************************")
-    console.log("User email: ", user?.email)
+
     await execLogout({
       variables: {
         email: user?.email,
@@ -58,8 +57,9 @@ const Logout: FC<ModalProps> = ({ isOpen, onClickToggle }) => {
           <div className="form-buttons form-buttons-sm">
             <div className="form-btn-left">
               <button
-                  style={{ marginLeft: ".5em" }}
+                  style={{ marginLeft: ".5em",background: "deepskyblue", }}
                   className="action-btn"
+
                   onClick={onClickLogout}
               >
                 Logout
