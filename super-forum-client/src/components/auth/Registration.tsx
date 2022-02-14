@@ -52,7 +52,7 @@ const Registration: FC<ModalProps> = ({isOpen, onClickToggle}) => {
             email === "" ||
             passwordConfirm === ""
         ) {
-            console.log("check is submitDisabled");
+
             return true;
         }
 

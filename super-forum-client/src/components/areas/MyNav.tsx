@@ -58,13 +58,17 @@ const MyNav = () => {
         event.preventDefault();
 
         try {
-            const result = await execBtnHandler({
-                variables: {
-                   button: event.currentTarget.name,
-                   arr: selectedCbox
-                }
-            });
-            console.log("on handler result", result);
+            if (selectedCbox){
+                const result = await execBtnHandler({
+                    variables: {
+                        button: event.currentTarget.name,
+                        arr: selectedCbox
+                    }
+                });
+                console.log("on handler result", result);
+            }
+
+
 
             // dispatch({payload: result.data.register, type: "resultMsg"});
 

@@ -50,37 +50,31 @@ export const register = async (
 };
 
 export const login = async (
-    userName: string,
+    email: string,
     password: string
 ): Promise<UserResult> => {
-    const user = await User.findOne({
-        where: {userName},
-    });
+    const user = await User.findOne({ where: { email } });
     if (!user) {
-        return {
-            messages: [userNotFound(userName)],
-        };
+        return { messages: [userNotFound(email)] };
+    }
+
+    if (user.status =="block"){
+        return { messages: ["User is blocked"] };
     }
 
     const passwordMatch = await bcrypt.compare(password, user?.password);
     if (!passwordMatch) {
-        return {
-            messages: ["Password is invalid."],
-        };
+        return { messages: ["Password is invalid."] };
     }
-
-    return {
-        user: user,
-    };
+    return { user: user };
 };
 
-export const logout = async (userName: string): Promise<string> => {
+export const logout = async (email: string): Promise<string> => {
     const user = await User.findOne({
-        where: {userName},
+        where: { email },
     });
-
     if (!user) {
-        return userNotFound(userName);
+        return userNotFound(email);
     }
 
     return "User logged off.";

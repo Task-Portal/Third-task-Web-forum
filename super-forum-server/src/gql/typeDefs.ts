@@ -35,8 +35,8 @@ const typeDefs = gql`
 
     type Mutation {
         register(email: String!, userName: String!, password: String!): String!
-        login(userName: String!, password: String!): String!
-        logout(userName: String!): String!
+        login(email: String!, password: String!): String!
+        logout(email: String!): String!
         blockUnblockDelete(button: String!, arr:[String!]):String!
 
     }

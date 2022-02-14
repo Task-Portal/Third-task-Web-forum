@@ -31,7 +31,7 @@ const columns = [
     {
         dataField: "createdOn",
         text: "Created On",
-        sort: true
+        sort: true,
     }, {
         dataField: "lastModifiedOn",
         text: "Last Modified",
@@ -58,7 +58,7 @@ const Main = () => {
         mode: "checkbox",
         // style: {background: 'navajowhite'},
         bgColor: (row, rowIndex) => {
-            return row.id===userState?.id ? "red": "navajowhite"
+            return row.id===userState?.id ? "skyblue": "navajowhite"
         },
         clickToSelect: true,
         onSelect: (row, isSelect, rowIndex, e) => {
@@ -75,7 +75,7 @@ const Main = () => {
             dispatch({type: SelectedCboxType, payload: r})
 
         },
-        selected: [...selectedCbox]
+        selected: [...selectedCbox],
     }
 
     return (

@@ -117,38 +117,40 @@ const resolvers: IResolvers = {
         },
         login: async (
             obj: any,
-            args: { userName: string; password: string },
+            args: { email: string; password: string },
             ctx: GqlContext,
             info: any
         ): Promise<string> => {
             let user: UserResult;
+
             try {
-                user = await login(args.userName, args.password);
+                user = await login(args.email, args.password);
                 if (user && user.user) {
                     ctx.req.session!.userId = user.user.id;
-
-                    return `Login successful for userId ${ctx.req.session!.userId}.`;
+                    return `Login successful.`;
                 }
                 return user && user.messages ? user.messages[0] : STANDARD_ERROR;
             } catch (ex) {
-                console.log(ex.message);
                 throw ex;
             }
         },
         logout: async (
             obj: any,
-            args: { userName: string },
+            args: { email: string },
             ctx: GqlContext,
             info: any
         ): Promise<string> => {
             try {
-                let result = await logout(args.userName);
+                let result = await logout(args.email);
                 ctx.req.session?.destroy((err: any) => {
                     if (err) {
                         console.log("destroy session failed");
                         return;
                     }
-                    console.log("session destroyed", ctx.req.session?.userId);
+                    console.log(
+                        "session destroyed resolvers 129",
+                        ctx.req.session?.userId
+                    );
                 });
                 return result;
             } catch (ex) {
@@ -163,7 +165,7 @@ const resolvers: IResolvers = {
         ): Promise<string> => {
             try {
                 let result = await blockUnblockDeleteDb(args.button, args.arr);
-
+                // console.log("Ctx: ",ctx)
                 // ctx.req.session?.destroy((err: any) => {
                 //     if (err) {
                 //         console.log("destroy session failed");

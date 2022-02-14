@@ -1,38 +1,75 @@
-import React, {useEffect} from "react";
+import React from "react";
 import "./App.css";
 import {Route, Switch} from "react-router-dom";
 import Home from "./components/routes/Home";
-import {useDispatch} from "react-redux";
-import {gql, useQuery} from "@apollo/client";
+import {useDispatch, useSelector} from "react-redux";
+import {gql, useMutation, useQuery} from "@apollo/client";
 import {UsersDateType} from "./store/usersData/UsersDataReducer";
-
+import {AppState} from "./store/AppState";
+import User from "./models/User";
+import useRefreshReduxMe, {Me} from "./hooks/useRefreshReduxMe";
+import Logout, {LogoutMutation} from "./components/auth/Logout";
 
 const GetAllUsers = gql`
-  query getAllUsers {
-    getAllUsers {
-      id
-      userName
-      email
-      status
-      createdOn
-      lastModifiedOn
+    query getAllUsers {
+        getAllUsers {
+            id
+            userName
+            email
+            status
+            createdOn
+            lastModifiedOn
+        }
     }
-  }
 `;
 
 function App() {
 
-  const { data: usersDate } = useQuery(GetAllUsers);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (usersDate && usersDate.getAllUsers) {
-      console.log("Getting data")
-      dispatch({
-        type: UsersDateType.USERS_DATE_TYPE,
-        payload: usersDate.getAllUsers,
-      });
-    }
-  }, [dispatch, usersDate]);
+    const dispatch = useDispatch();
+    const user = useSelector((state: AppState) => state.user);
+    const {deleteMe} = useRefreshReduxMe();
+    const [execLogout] = useMutation(LogoutMutation, {
+        refetchQueries: [
+            {
+                query: Me,
+            },
+        ],
+    });
+
+    const {data: usersDate} = useQuery(GetAllUsers, {
+        pollInterval: 1000,
+        nextFetchPolicy: "network-only",
+        onCompleted: (data) => {
+            dispatch({
+                type: UsersDateType.USERS_DATE_TYPE,
+                payload: usersDate.getAllUsers,
+            });
+            if (user) {
+
+                const f = data.getAllUsers.filter((u: User) => u.id === user.id)
+                console.log("F: ",f)
+                if (f == null || f.status == "block") {
+                    console.log("Here.......")
+
+
+                    //deleteMe();
+                }
+
+            }
+
+        }
+
+    });
+
+    // useEffect(() => {
+    //   if (usersDate && usersDate.getAllUsers) {
+    //
+    //     dispatch({
+    //       type: UsersDateType.USERS_DATE_TYPE,
+    //       payload: usersDate.getAllUsers,
+    //     });
+    //   }
+    // }, [dispatch, usersDate]);
 
     const renderHome = (props: any) => <Home {...props} />;
 

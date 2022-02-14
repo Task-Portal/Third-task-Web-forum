@@ -1,6 +1,7 @@
-import { gql, QueryLazyOptions, useLazyQuery } from "@apollo/client";
+import {gql, QueryLazyOptions, useLazyQuery, useQuery} from "@apollo/client";
 import { useDispatch } from "react-redux";
 import { UserProfileSetType } from "../store/user/UserReducer";
+import {useHistory} from "react-router-dom";
 
 
 export const Me = gql`
@@ -12,11 +13,11 @@ export const Me = gql`
       ... on User {
         id
         userName
+        email
       }
     }
   }
 `;
-
 interface UseRefreshReduxMeResult {
   execMe: (options?: QueryLazyOptions<Record<string, any>> | undefined) => void;
   deleteMe: () => void;
@@ -26,14 +27,14 @@ interface UseRefreshReduxMeResult {
 const useRefreshReduxMe = (): UseRefreshReduxMeResult => {
   const [execMe, { data }] = useLazyQuery(Me);
   const reduxDispatcher = useDispatch();
-
+  const history = useHistory();
 
   const deleteMe = () => {
     reduxDispatcher({
       type: UserProfileSetType.USER_PROFILE_SET,
       payload: null,
     });
-   // history.replace(`/`);
+    history.replace(`/`);
   };
   const updateMe = () => {
     console.log("useRefreshReduxMe->UpdateMe->data.me: ", data?.me);
@@ -42,7 +43,7 @@ const useRefreshReduxMe = (): UseRefreshReduxMeResult => {
         type: UserProfileSetType.USER_PROFILE_SET,
         payload: data.me,
       });
-
+      history.push(`/`);
     }
   };
 
