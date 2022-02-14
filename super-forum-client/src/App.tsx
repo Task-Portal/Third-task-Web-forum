@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import {Route, Switch} from "react-router-dom";
+import {Route, Switch, useHistory} from "react-router-dom";
 import Home from "./components/routes/Home";
 import {useDispatch, useSelector} from "react-redux";
 import {gql, useMutation, useQuery} from "@apollo/client";
@@ -8,7 +8,7 @@ import {UsersDateType} from "./store/usersData/UsersDataReducer";
 import {AppState} from "./store/AppState";
 import User from "./models/User";
 import useRefreshReduxMe, {Me} from "./hooks/useRefreshReduxMe";
-import Logout, {LogoutMutation} from "./components/auth/Logout";
+import {LogoutMutation} from "./components/auth/Logout";
 
 const GetAllUsers = gql`
     query getAllUsers {
@@ -26,6 +26,7 @@ const GetAllUsers = gql`
 function App() {
 
     const dispatch = useDispatch();
+    const history = useHistory();
     const user = useSelector((state: AppState) => state.user);
     const {deleteMe} = useRefreshReduxMe();
     const [execLogout] = useMutation(LogoutMutation, {
@@ -47,12 +48,17 @@ function App() {
             if (user) {
 
                 const f = data.getAllUsers.filter((u: User) => u.id === user.id)
-                console.log("F: ",f)
-                if (f == null || f.status == "block") {
-                    console.log("Here.......")
 
+                if (f[0] == null) {
 
-                    //deleteMe();
+                    (async () => await execLogout({
+                        variables: {
+                            email: user?.email,
+                        },
+                    }))();
+                    deleteMe();
+                } else if (f[0].status === "block") {
+                    deleteMe();
                 }
 
             }
@@ -60,16 +66,6 @@ function App() {
         }
 
     });
-
-    // useEffect(() => {
-    //   if (usersDate && usersDate.getAllUsers) {
-    //
-    //     dispatch({
-    //       type: UsersDateType.USERS_DATE_TYPE,
-    //       payload: usersDate.getAllUsers,
-    //     });
-    //   }
-    // }, [dispatch, usersDate]);
 
     const renderHome = (props: any) => <Home {...props} />;
 

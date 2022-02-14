@@ -140,8 +140,8 @@ export const blockUnblockDeleteDb = async (button: string, arr: Array<string>): 
     return str;
 }
 
-function userNotFound(userName: string) {
-    return `User with userName ${userName} not found.`;
+function userNotFound(email: string) {
+    return `User with email ${email} not found.`;
 }
 
 function  getDateTime(){
