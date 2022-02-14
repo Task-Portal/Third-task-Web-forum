@@ -5,7 +5,7 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import BootstrapTable, {SelectRowProps} from "react-bootstrap-table-next";
 import User from "../../../models/User";
 import {SelectedCboxType} from "../../../store/selectedCheckboxes/selectedCboxReducer";
-
+import format from 'date-fns/format'
 const columns = [
     // {
     //     dataField: "id",
@@ -32,10 +32,12 @@ const columns = [
         dataField: "createdOn",
         text: "Created On",
         sort: true,
+        formatter:(cell:any)=>{return format(new Date(cell), 'dd MMMM yyyy eee ')}
     }, {
         dataField: "lastModifiedOn",
         text: "Last Modified",
-        sort: true
+        sort: true,
+        formatter:(cell:any)=>{return format(new Date(cell), 'dd MMMM yyyy eee ')}
     }
 
 ];
