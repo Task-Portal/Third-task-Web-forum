@@ -3,10 +3,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppState} from "../../../store/AppState";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import BootstrapTable, {SelectRowProps} from "react-bootstrap-table-next";
+
 import User from "../../../models/User";
 import {SelectedCboxType} from "../../../store/selectedCheckboxes/selectedCboxReducer";
 import Container from 'react-bootstrap/Container'
 import format from 'date-fns/format'
+
+
 
 const columns = [
 
@@ -59,7 +62,6 @@ const Main = () => {
 
     const selectRow: SelectRowProps<any> = {
         mode: "checkbox",
-        // style: {background: 'navajowhite'},
         bgColor: (row) => {
             return row.id === userState?.id ? "skyblue" : "navajowhite"
         },
@@ -81,7 +83,16 @@ const Main = () => {
         selected: [...selectedCbox],
     }
 
+    const customTotal = (from:any, to:any, size:any) => (
+        <span className="react-bootstrap-table-pagination-total">
+    Showing { from } to { to } of { size } Results
+  </span>
+    );
+
+
+
     return (
+
         <Container>
             <BootstrapTable
                 bootstrap4
@@ -92,6 +103,7 @@ const Main = () => {
                 classes="bootstrap_class"
                 bordered={false}
                 striped={true}
+
             />
         </Container>
 

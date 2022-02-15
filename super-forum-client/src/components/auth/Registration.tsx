@@ -37,9 +37,9 @@ const Registration: FC<ModalProps> = ({isOpen, onClickToggle}) => {
         },
         dispatch,
     ] = useReducer(userReducer, {
-        userName: "Alex",
-        password: "1",
-        email: "admin@admin.com",
+        userName: "",
+        password: "",
+        email: "",
         passwordConfirm: "",
         resultMsg: "",
         // isSubmitDisabled: true,
@@ -170,7 +170,7 @@ const Registration: FC<ModalProps> = ({isOpen, onClickToggle}) => {
                     </div>
                     <div>
                         <input
-                            type="text"
+                            type="password"
                             placeholder="Password"
                             value={password}
                             onChange={onChangePassword}
@@ -178,7 +178,7 @@ const Registration: FC<ModalProps> = ({isOpen, onClickToggle}) => {
                     </div>
                     <div>
                         <input
-                            type="text"
+                            type="password"
                             placeholder="Password Confirmation"
                             value={passwordConfirm}
                             onChange={onChangePasswordConfirm}
