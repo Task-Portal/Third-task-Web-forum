@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import {Route, Switch, useHistory} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import Home from "./components/routes/Home";
 import {useDispatch, useSelector} from "react-redux";
 import {gql, useMutation, useQuery} from "@apollo/client";
@@ -26,7 +26,7 @@ const GetAllUsers = gql`
 function App() {
 
     const dispatch = useDispatch();
-    const history = useHistory();
+
     const user = useSelector((state: AppState) => state.user);
     const {deleteMe} = useRefreshReduxMe();
     const [execLogout] = useMutation(LogoutMutation, {

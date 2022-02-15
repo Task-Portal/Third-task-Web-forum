@@ -19,14 +19,20 @@
 
 body {
   min-height: 75rem;
-  padding-top: 4.5rem;
+  background-image: url(../src/img/library.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+
 }
 
-/*.screen-root-container {*/
-/*  max-width: 1200px;*/
-/*  margin: 0 auto 2em;*/
-/*  border-radius: 0.3em;*/
-/*}*/
+.bootstrap_class{
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-top: 8rem;
+  background: rgb(255,255,255);
+  background: radial-gradient(circle, rgba(255,255,255,0.9783263647255778) 0%, rgba(238,226,97,0.8550770650056898) 100%);
+
+}
 
 .modal-menu {
   position: fixed;
@@ -40,6 +46,8 @@ body {
   padding: 1em 1em 1em 1em;
   z-index: 1000;
 }
+
+
 
 input[type="text"],
 input[type="password"],
@@ -110,62 +118,16 @@ input[type="submit"]:hover {
   padding-top: 0.8em;
 }
 
-/*.title-bar {*/
-/*  margin-bottom: 0.4em;*/
-/*  padding-bottom: 0.25em !important;*/
-/*  border-bottom: 3px solid var(--input-border-color);*/
-/*}*/
-
-/*.panel {*/
-/*  display: flex;*/
-/*  flex-direction: row;*/
-/*  border: solid var(--panel-border-thickness) var(--border-color);*/
-/*  border-radius: 0.07em;*/
-/*  background-color: var(--panel-color);*/
-
-/*  white-space: wrap;*/
-/*  overflow: hidden;*/
-/*  text-overflow: ellipsis;*/
-/*}*/
-
-/*.icon-lg {*/
-/*  margin-left: 0.5em;*/
-/*  width: 2.23em;*/
-/*}*/
-
-/*.points-icon {*/
-/*  margin-top: 0.5em;*/
-/*}*/
-
-/*.clickable-span {*/
-/*  cursor: pointer;*/
-/*}*/
-
-/*.field {*/
-/*  width: 100%;*/
-/*  height: 56px;*/
-/*  border-radius: 4px;*/
-/*  position: relative;*/
-/*  background-color: rgba(255, 255, 255, 0.3);*/
-/*  transition: 0.3s all;*/
-/*}*/
-/*.field:hover {*/
-/*  background-color: rgba(255, 255, 255, 0.45);*/
-/*  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);*/
-/*}*/
-
-/*hr {*/
-/*  width: 100%;*/
-/*  border: solid 2px var(--section-divider-color);*/
-/*}*/
-
-
 .menu-name{
-  color: white;
+  color: #03a9f4;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+
 }
 
+
 .icon-fontAwesome{
-  color: white;
+  color: gold;
 }
 
 .nav_li{

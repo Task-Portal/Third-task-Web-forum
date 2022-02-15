@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSignInAlt, faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
-import "./Nav.css";
 import Registration from "../auth/Registration";
 import Login from "../auth/Login";
 import Logout from "../auth/Logout";
@@ -22,7 +21,7 @@ const btnHandler = gql`
     mutation blockUnblockDelete(
         $button: String!
         $arr: [String!]
-        
+
     ) {
         blockUnblockDelete(
             button: $button
@@ -30,7 +29,6 @@ const btnHandler = gql`
         )
     }
 `;
-
 
 const MyNav = () => {
 
@@ -53,12 +51,11 @@ const MyNav = () => {
         setShowLogin(!showLogin);
     };
 
-
-    const buttonHandler = async(event: React.MouseEvent<HTMLButtonElement>) => {
+    const buttonHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
         try {
-            if (selectedCbox){
+            if (selectedCbox) {
                 const result = await execBtnHandler({
                     variables: {
                         button: event.currentTarget.name,
@@ -68,10 +65,6 @@ const MyNav = () => {
                 console.log("on handler result", result);
             }
 
-
-
-            // dispatch({payload: result.data.register, type: "resultMsg"});
-
         } catch (ex) {
             console.log(ex);
         }
@@ -79,9 +72,9 @@ const MyNav = () => {
     };
 
     return (
-        <Navbar bg="dark" expand="lg">
+        <Navbar bg="black" expand="lg">
             <Container>
-                <Navbar.Brand href="#" style={{color: "whitesmoke"}}>Users</Navbar.Brand>
+                <Navbar.Brand href="#" style={{color: "gold"}}>Users</Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll"/>
                 <Navbar.Collapse id="navbarScroll">
                     <Nav
@@ -132,18 +125,21 @@ const MyNav = () => {
 
                     {user ? (
                         <div className="d-flex">
-                            <Button variant="outline-light" className="me-sm-1" name="block" onClick={buttonHandler}>
+                            <Button variant="outline-light" className="me-sm-1 menu-name" name="block"
+                                    onClick={buttonHandler}>
                                 <FontAwesomeIcon icon={faLock} className="icon-fontAwesome"/>
                                 Block
                             </Button>
 
 
-                            <Button variant="outline-light" className="me-sm-1" name="active" onClick={buttonHandler}>
+                            <Button variant="outline-light" className="me-sm-1 menu-name" name="active"
+                                    onClick={buttonHandler}>
                                 <FontAwesomeIcon icon={faLockOpen} className="icon-fontAwesome"/>
                                 Unblock
                             </Button>
 
-                            <Button variant="outline-light" className="me-sm-1" name="delete" onClick={buttonHandler}>
+                            <Button variant="outline-light" className="me-sm-1 menu-name" name="delete"
+                                    onClick={buttonHandler}>
                                 <FontAwesomeIcon icon={faUserMinus} className="icon-fontAwesome"/>
                                 Delete
                             </Button>

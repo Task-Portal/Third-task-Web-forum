@@ -5,13 +5,10 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import BootstrapTable, {SelectRowProps} from "react-bootstrap-table-next";
 import User from "../../../models/User";
 import {SelectedCboxType} from "../../../store/selectedCheckboxes/selectedCboxReducer";
+import Container from 'react-bootstrap/Container'
 import format from 'date-fns/format'
+
 const columns = [
-    // {
-    //     dataField: "id",
-    //     text: "id",
-    //     sort: true
-    // },
 
     {
         dataField: "userName",
@@ -32,12 +29,16 @@ const columns = [
         dataField: "createdOn",
         text: "Created On",
         sort: true,
-        formatter:(cell:any)=>{return format(new Date(cell), 'dd MMMM yyyy eee H:mm:ss')}
+        formatter: (cell: any) => {
+            return format(new Date(cell), 'dd MMMM yyyy eee H:mm:ss')
+        }
     }, {
         dataField: "lastModifiedOn",
         text: "Last Login Date",
         sort: true,
-        formatter:(cell:any)=>{return format(new Date(cell), 'dd MMMM yyyy eee H:mm:ss')}
+        formatter: (cell: any) => {
+            return format(new Date(cell), 'dd MMMM yyyy eee H:mm:ss')
+        }
     }
 
 ];
@@ -59,18 +60,18 @@ const Main = () => {
     const selectRow: SelectRowProps<any> = {
         mode: "checkbox",
         // style: {background: 'navajowhite'},
-        bgColor: (row, rowIndex) => {
-            return row.id===userState?.id ? "skyblue": "navajowhite"
+        bgColor: (row) => {
+            return row.id === userState?.id ? "skyblue" : "navajowhite"
         },
         clickToSelect: true,
-        onSelect: (row, isSelect, rowIndex, e) => {
+        onSelect: (row, isSelect) => {
 
             let f = [...selectedCbox]
             isSelect ? f.push(row.id) : f = f.filter(m => m !== row.id)
             setSelectedCbox(f)
             dispatch({type: SelectedCboxType, payload: f})
         },
-        onSelectAll: (isSelect, rows, e) => {
+        onSelectAll: (isSelect, rows) => {
 
             const r = isSelect ? rows.map(m => m.id) : []
             setSelectedCbox(r)
@@ -81,13 +82,18 @@ const Main = () => {
     }
 
     return (
-        <BootstrapTable
-            bootstrap4
-            keyField="id"
-            data={data!}
-            columns={columns}
-            selectRow={selectRow}
-        />
+        <Container>
+            <BootstrapTable
+                bootstrap4
+                keyField="id"
+                data={data!}
+                columns={columns}
+                selectRow={selectRow}
+                classes="bootstrap_class"
+                bordered={false}
+                striped={true}
+            />
+        </Container>
 
     );
 };
