@@ -109,17 +109,6 @@ const Registration: FC<ModalProps> = ({isOpen, onClickToggle}) => {
     ) => {
         e.preventDefault();
 
-        let d = new Date(); // for now
-
-        console.log(
-            "***************",
-            `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}:${d.getMilliseconds()}`
-        );
-        console.log("UserName", userName);
-        console.log("password", password);
-        console.log("email", email);
-        console.log("passwordConfirm", passwordConfirm);
-
         try {
             const result = await execRegister({
                 variables: {
@@ -128,7 +117,7 @@ const Registration: FC<ModalProps> = ({isOpen, onClickToggle}) => {
                     password
                 },
             });
-            console.log("register result", result);
+
             dispatch({payload: result.data.register, type: "resultMsg"});
 
         } catch (ex) {

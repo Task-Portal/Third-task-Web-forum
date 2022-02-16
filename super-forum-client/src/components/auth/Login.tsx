@@ -31,14 +31,14 @@ const Login: FC<ModalProps> = ({isOpen, onClickToggle}) => {
     const {execMe, updateMe} = useRefreshReduxMe();
 
     const onChangeUserEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-        //todo check if trim() working
+
         dispatch({type: "email", payload: e.target.value.trim()});
         if (!e.target.value) allowSubmit(dispatch, "Email cannot be empty", true);
         else allowSubmit(dispatch, "", false);
     };
 
     const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        //todo check if trim() working
+
         dispatch({type: "password", payload: e.target.value.trim()});
         if (!e.target.value)
             allowSubmit(dispatch, "Password cannot be empty", true);
@@ -57,7 +57,7 @@ const Login: FC<ModalProps> = ({isOpen, onClickToggle}) => {
                 password,
             },
         });
-        console.log("login", result);
+
 
         dispatch({type: "resultMsg", payload: result.data.login});
         execMe();

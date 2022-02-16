@@ -9,8 +9,6 @@ import {SelectedCboxType} from "../../../store/selectedCheckboxes/selectedCboxRe
 import Container from 'react-bootstrap/Container'
 import format from 'date-fns/format'
 
-
-
 const columns = [
 
     {
@@ -83,11 +81,6 @@ const Main = () => {
         selected: [...selectedCbox],
     }
 
-    const customTotal = (from:any, to:any, size:any) => (
-        <span className="react-bootstrap-table-pagination-total">
-    Showing { from } to { to } of { size } Results
-  </span>
-    );
 
 
 
