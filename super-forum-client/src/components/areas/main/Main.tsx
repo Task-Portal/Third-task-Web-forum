@@ -81,12 +81,9 @@ const Main = () => {
         selected: [...selectedCbox],
     }
 
-
-
-
     return (
 
-        <Container>
+       data.length>0? <Container>
             <BootstrapTable
                 bootstrap4
                 keyField="id"
@@ -98,7 +95,7 @@ const Main = () => {
                 striped={true}
 
             />
-        </Container>
+        </Container> :null
 
     );
 };

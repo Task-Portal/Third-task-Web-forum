@@ -80,15 +80,18 @@ const Registration: FC<ModalProps> = ({isOpen, onClickToggle}) => {
         if (!passwordCheck.isValid) {
             // allowSubmit(dispatch, passwordCheck.message, true);
             dispatch({payload: passwordCheck.message, type: "resultMsg"});
-        } else {
+        } else  if  (resultMsg ===""){
             // allowSubmit(dispatch, passwordCheck.message, IsSubmitDisabledFunc());
             dispatch({payload: "", type: "resultMsg"});
         }
     };
 
     const onChangePasswordConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (resultMsg ===""){
+
         dispatch({payload: e.target.value, type: "passwordConfirm"});
         isPasswordTheSame(password, e.target.value);
+        }
     };
 
     const isPasswordTheSame = (
@@ -121,7 +124,8 @@ const Registration: FC<ModalProps> = ({isOpen, onClickToggle}) => {
             dispatch({payload: result.data.register, type: "resultMsg"});
 
         } catch (ex) {
-            console.log(ex);
+            // console.log(ex);
+            dispatch({payload: "The email is taken", type: "resultMsg"});
         }
     };
 

@@ -34,7 +34,7 @@ const Login: FC<ModalProps> = ({isOpen, onClickToggle}) => {
 
         dispatch({type: "email", payload: e.target.value.trim()});
         if (!e.target.value) allowSubmit(dispatch, "Email cannot be empty", true);
-        else allowSubmit(dispatch, "", false);
+         else allowSubmit(dispatch, "", true);
     };
 
     const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
