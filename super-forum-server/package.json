@@ -24,7 +24,7 @@
     "graphql": "^15.3.0",
     "graphql-middleware": "^4.0.2",
     "graphql-tools": "^8.2.0",
-    "ioredis": "^4.17.3",
+    "ioredis": "^3.2.2",
     "pg": "^8.3.3",
     "typeorm": "^0.2.25",
     "uuid": "^8.3.0"

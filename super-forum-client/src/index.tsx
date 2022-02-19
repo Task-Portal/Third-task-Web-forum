@@ -13,7 +13,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 // console.log("gql url", process.env.REACT_APP_GQL_URL);
 const client = new ApolloClient({
-  //Todo change for process.env.REACT_APP_GQL_URL and check if it works
   uri: "http://localhost:5000/graphql",
   credentials: "include",
   cache: new InMemoryCache({
